@@ -1,7 +1,11 @@
 import React from 'react';
 
-const Root = () => {
-  return <div>Root component</div>;
-};
+import CollectionsList from '../collections-list';
+
+class Root extends React.Component {
+  render() {
+    return <CollectionsList />;
+  }
+}
 
 export default Root;
