@@ -2,41 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Item from '../item';
+import collectionsApi from '../../api/collections-api';
 
-const items = [
-  {
-    id: 'Et2S51MO',
-    name: 'Ромашка',
-    description: "Фантик от 'Ромашки'",
-    owned: true
-  }
-];
-
-const items2 = [
-  {
-    id: 'D09nCEtT',
-    name: 'Hatsune Miku',
-    description: "Фигурка 'Хатсуне Мику'",
-    owned: true
-  }
-];
 
 class ItemList extends React.Component {
-  state = { items: [] };
+  state = { items: [], loading: false, message: null };
 
   static propTypes = {
-    collectionName: PropTypes.string.isRequired
+    collectionName: PropTypes.string.isRequired,
+    collectionId: PropTypes.string.isRequired
   };
 
   componentDidMount() {
-    // Заглушка до интеграции с бэком
-    const { collectionName } = this.props;
-    if (collectionName === 'Фигурки') {
-      this.setState({ items: items2 });
-    } else {
-      this.setState({ items });
-    }
-    // Конец заглушки
+    this.setState({ loading: true });
+    collectionsApi
+      .get(`/collections/${this.props.collectionId}/items`)
+      .then((response) => {
+        console.log('Response from get items: ', response);
+        if (response.data.status === 'OK') {
+          const items = response.data.data;
+          this.setState({ items, loading: false });
+        } else {
+          this.setState({ message: response.data.message });
+        }
+      })
+      .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
   }
 
   render() {
