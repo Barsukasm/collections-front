@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Item from '../item';
 import collectionsApi from '../../api/collections-api';
@@ -8,15 +7,11 @@ import collectionsApi from '../../api/collections-api';
 class ItemList extends React.Component {
   state = { items: [], loading: false, message: null };
 
-  static propTypes = {
-    collectionName: PropTypes.string.isRequired,
-    collectionId: PropTypes.string.isRequired
-  };
 
   componentDidMount() {
     this.setState({ loading: true });
     collectionsApi
-      .get(`/collections/${this.props.collectionId}/items`)
+      .get(`/collections/${this.props.match.params.collectionId}/items`)
       .then((response) => {
         console.log('Response from get items: ', response);
         if (response.data.status === 'OK') {
