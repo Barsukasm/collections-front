@@ -3,10 +3,8 @@ import React from 'react';
 import Item from '../item';
 import collectionsApi from '../../api/collections-api';
 
-
 class ItemList extends React.Component {
   state = { items: [], loading: false, message: null };
-
 
   componentDidMount() {
     this.setState({ loading: true });
