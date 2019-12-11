@@ -16,22 +16,36 @@ class Collection extends React.Component{
 static propTypes = {
   collectionName: PropTypes.string.isRequired,
   collectionId: PropTypes.string.isRequired,
-  description: PropTypes.string
+  description: PropTypes.string,
+  removeCollection: PropTypes.func.isRequired
 };
 
 static defaultProps = {
   description: locale.missingDescription
 };
+  state = {changeTitle: false, changeDescr: false};
+
+  removeCollection = (e) => {
+    e.preventDefault();
+
+    const {removeCollection, collectionId} = this.props;
+
+    removeCollection(collectionId);
+  };
+
+  
 
 
 
   render(){
     const {collectionName, collectionId, description} = this.props;
+    const {changeTitle, changeDescr} = this.state;
     return(
       <div className='collection'>
-        <div>{`${locale.name} ${collectionName}`}</div>
-        <div>{`${locale.desc} ${description}`}</div>
+        {!changeTitle && <div>{`${locale.name} ${collectionName}`} <Button label={locale.edit} /></div>}
+        {!changeDescr && <div>{`${locale.desc} ${description}`} <Button label={locale.edit} /></div>}
         <Link to={`/${collectionId}/items`}><Button label={locale.toItems} /></Link>
+        <Button label={locale.remove} onClick={this.removeCollection} />
       </div>
     )
   }

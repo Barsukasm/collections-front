@@ -44,6 +44,23 @@ class CollectionsList extends React.Component {
 
   };
 
+  removeCollection = (collectionId) => {
+    this.setState({loading: true});
+    collectionsApi
+      .delete(`/collections/${collectionId}`)
+      .then((response) => {
+        if(response.data.status === 'OK'){
+          this.setState((prevState)=>({
+            collections: [
+              ...prevState.collections.filter(collection => collection.id !== collectionId)
+            ],
+            loading: false
+          }));
+        }
+      })
+      .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
+  };
+
   render() {
     const { collections } = this.state;
     return (
@@ -55,6 +72,7 @@ class CollectionsList extends React.Component {
             collectionName={name}
             collectionId={id}
             description={description}
+            removeCollection={this.removeCollection}
           />
         ))}
       </div>

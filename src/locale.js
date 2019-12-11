@@ -11,7 +11,9 @@ export default {
         missingDescription: 'К сожалению, описание для этой коллекции отсутствует.',
         name: 'Название коллекции:',
         desc: 'Описание:',
-        toItems: 'Подробнее'
+        toItems: 'Подробнее',
+        remove: 'Удалить коллекцию',
+        edit: 'Редактировать'
     },
     CollectionForm:{
         add: 'Добавить'
