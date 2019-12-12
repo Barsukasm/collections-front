@@ -33,7 +33,7 @@ static defaultProps = {
     removeCollection(collectionId);
   };
 
-  
+
 
 
 
