@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import Collection from '../collection';
-import collectionsApi from '../../api/collections-api';
-import CollectionForm from '../collection-form/collection-form';
+import Collection from "../collection";
+import collectionsApi from "../../api/collections-api";
+import CollectionForm from "../collection-form/collection-form";
 
 class CollectionsList extends React.Component {
   state = { collections: [], loading: false, message: null };
@@ -10,53 +10,53 @@ class CollectionsList extends React.Component {
   componentDidMount() {
     this.setState({ loading: true });
     collectionsApi
-      .get('/collections')
-      .then((response) => {
-        console.log('Response from get collections: ', response);
-        if (response.data.status === 'OK') {
+      .get("/collections")
+      .then(response => {
+        console.log("Response from get collections: ", response);
+        if (response.data.status === "OK") {
           const collections = response.data.data;
           this.setState({ collections, loading: false });
         } else {
           this.setState({ message: response.data.message });
         }
       })
-      .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
+      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
   }
 
   addCollection = (title, description) => {
     this.setState({ loading: true });
     collectionsApi
-      .post('/collections', {
+      .post("/collections", {
         name: title,
         description,
         items: []
       })
-      .then((response) => {
-        this.setState((prevState) => ({
+      .then(response => {
+        this.setState(prevState => ({
           collections: [...prevState.collections, response.data.data],
           loading: false
         }));
       })
-      .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
+      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
   };
 
-  removeCollection = (collectionId) => {
+  removeCollection = collectionId => {
     this.setState({ loading: true });
     collectionsApi
       .delete(`/collections/${collectionId}`)
-      .then((response) => {
-        if (response.data.status === 'OK') {
-          this.setState((prevState) => ({
+      .then(response => {
+        if (response.data.status === "OK") {
+          this.setState(prevState => ({
             collections: [
               ...prevState.collections.filter(
-                (collection) => collection.id !== collectionId
+                collection => collection.id !== collectionId
               )
             ],
             loading: false
           }));
         }
       })
-      .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
+      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
   };
 
   editCollection = (collectionId, newTitle, newDescription) => {
@@ -66,16 +66,15 @@ class CollectionsList extends React.Component {
         title: newTitle,
         description: newDescription
       })
-      .then((response) => {
+      .then(response => {
         const newCollection = response.data.data;
         console.log(this.state.collections[1]);
-        if (response.data.status === 'OK') {
-          this.setState((prevState) => ({
+        if (response.data.status === "OK") {
+          this.setState(prevState => ({
             collections: [
-              ...prevState.collections.map((collection) => {
+              ...prevState.collections.map(collection => {
                 if (collection.id === collectionId) {
-                  collection.title = newCollection.title;
-                  collection.description = newCollection.description;
+                  return newCollection;
                 }
                 return collection;
               })
@@ -84,7 +83,7 @@ class CollectionsList extends React.Component {
           }));
         }
       })
-      .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
+      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
   };
 
   render() {

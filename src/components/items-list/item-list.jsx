@@ -1,7 +1,12 @@
-import React from 'react';
+import React from "react";
 
-import Item from '../item';
-import collectionsApi from '../../api/collections-api';
+import Item from "../item";
+import collectionsApi from "../../api/collections-api";
+import ItemForm from "../item-form";
+import Button from "../button/button";
+import Locale from "../../locale";
+
+const locale = Locale.ItemList;
 
 class ItemList extends React.Component {
   state = { items: [], loading: false, message: null };
@@ -10,25 +15,107 @@ class ItemList extends React.Component {
     this.setState({ loading: true });
     collectionsApi
       .get(`/collections/${this.props.match.params.collectionId}/items`)
-      .then((response) => {
-        console.log('Response from get items: ', response);
-        if (response.data.status === 'OK') {
+      .then(response => {
+        console.log("Response from get items: ", response);
+        if (response.data.status === "OK") {
           const items = response.data.data;
           this.setState({ items, loading: false });
         } else {
           this.setState({ message: response.data.message });
         }
       })
-      .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
+      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
   }
+
+  addItem = (title, description, owned) => {
+    this.setState({ loading: true });
+    collectionsApi
+      .post(`/collections/${this.props.match.params.collectionId}/items`, {
+        name: title,
+        description,
+        owned
+      })
+      .then(response => {
+        if (response.data.status === "OK") {
+          this.setState(prevState => ({
+            items: [...prevState.items, response.data.data],
+            loading: false
+          }));
+        }
+      })
+      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
+  };
+
+  editItem = (id, title, description, owned) => {
+    this.setState({ loading: true });
+    collectionsApi
+      .patch(
+        `/collections/${this.props.match.params.collectionId}/items/${id}`,
+        {
+          name: title,
+          description,
+          owned
+        }
+      )
+      .then(response => {
+        if (response.data.status === "OK") {
+          const updatedItem = response.data.data;
+          this.setState(prevState => ({
+            items: [
+              ...prevState.items.map(item => {
+                if (item.id === updatedItem.id) {
+                  return updatedItem;
+                }
+                return item;
+              })
+            ],
+            loading: false
+          }));
+        }
+      })
+      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
+  };
+
+  removeItem = id => {
+    this.setState({ loading: true });
+    collectionsApi
+      .delete(
+        `/collections/${this.props.match.params.collectionId}/items/${id}`
+      )
+      .then(response => {
+        if (response.data.status === "OK") {
+          this.setState(prevState => ({
+            items: [...prevState.items.filter(item => item.id !== id)],
+            loading: false
+          }));
+        }
+      })
+      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
+  };
+
+  backToCollections = e => {
+    e.preventDefault();
+
+    this.props.history.push("/");
+  };
 
   render() {
     const { items } = this.state;
     return (
-      <div className='item-list'>
+      <div className="item-list">
+        <ItemForm addItem={this.addItem} />
         {items.map(({ name, description, owned, id }) => (
-          <Item key={id} name={name} description={description} owned={owned} />
+          <Item
+            key={id}
+            itemId={id}
+            name={name}
+            description={description}
+            owned={owned}
+            editItem={this.editItem}
+            removeItem={this.removeItem}
+          />
         ))}
+        <Button label={locale.back} onClick={this.backToCollections} />
       </div>
     );
   }

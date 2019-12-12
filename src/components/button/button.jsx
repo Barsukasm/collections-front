@@ -6,7 +6,7 @@ import './button.scss';
 const Button = (props) => {
   const {label, ...otherProps} = props;
 
-  return(
+  return (
     <button className='button' {...otherProps}>
       {label}
     </button>

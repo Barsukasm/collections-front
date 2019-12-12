@@ -4,16 +4,14 @@ import PropTypes from "prop-types";
 import Locale from "../../locale";
 import Button from "../button/button";
 
-import "./collection-form.scss";
+const locale = Locale.ItemForm;
 
-const locale = Locale.CollectionForm;
-
-class CollectionForm extends React.Component {
+class ItemForm extends React.Component {
   static propTypes = {
-    addCollection: PropTypes.func.isRequired
+    addItem: PropTypes.func.isRequired
   };
 
-  state = { title: "", description: "" };
+  state = { title: "", description: "", owned: false };
 
   handleInputChange = event => {
     const target = event.target;
@@ -25,29 +23,38 @@ class CollectionForm extends React.Component {
     });
   };
 
-  addCollection = e => {
+  addItem = e => {
     e.preventDefault();
 
-    const { addCollection } = this.props;
-    const { title, description } = this.state;
+    const { addItem } = this.props;
+    const { title, description, owned } = this.state;
 
-    addCollection(title, description);
+    addItem(title, description, owned);
   };
 
   render() {
-    const { title, description } = this.state;
+    const { title, description, owned } = this.state;
     return (
-      <form className="collection-form" onSubmit={this.addCollection}>
+      <form className="item-form" onSubmit={this.addItem}>
+        <label htmlFor="title">{locale.forTitle}</label>
         <input
           type="text"
           name="title"
           value={title}
           onChange={this.handleInputChange}
         />
+        <label htmlFor="description">{locale.forDesc}</label>
         <input
           type="text"
           name="description"
           value={description}
+          onChange={this.handleInputChange}
+        />
+        <label htmlFor="owned">{locale.forOwned}</label>
+        <input
+          type="checkbox"
+          name="owned"
+          checked={owned}
           onChange={this.handleInputChange}
         />
         <Button label={locale.add} />
@@ -56,4 +63,4 @@ class CollectionForm extends React.Component {
   }
 }
 
-export default CollectionForm;
+export default ItemForm;
