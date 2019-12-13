@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 import Locale from "../../locale";
 
@@ -49,9 +51,7 @@ class Item extends React.Component {
     removeItem(itemId);
   };
 
-  switchFlag = e => {
-    e.preventDefault();
-    const targetName = e.target.name;
+  switchFlag = targetName => {
     const { itemId, editItem } = this.props;
     const { name, description, owned } = this.state;
 
@@ -85,52 +85,60 @@ class Item extends React.Component {
     return (
       <div className="item">
         {!editName && (
-          <div>
+          <div className="item__title">
             {`${locale.name} ${name}`}{" "}
-            <Button
-              label={locale.edit}
+            <FontAwesomeIcon
+              icon={faPencilAlt}
               name="editName"
-              onClick={this.switchFlag}
+              onClick={() => {
+                this.switchFlag("editName");
+              }}
             />
           </div>
         )}
         {editName && (
-          <div>
+          <div className="item__title">
             {locale.name}{" "}
             <input name="name" value={name} onChange={this.handleInputChange} />{" "}
-            <Button
-              label={locale.edit}
+            <FontAwesomeIcon
+              icon={faPencilAlt}
               name="editName"
-              onClick={this.switchFlag}
+              onClick={() => {
+                this.switchFlag("editName");
+              }}
             />
           </div>
         )}
         {!editDesc && (
-          <div>
+          <div className="item__description">
             {`${locale.desc} ${description}`}{" "}
-            <Button
-              label={locale.edit}
+            <FontAwesomeIcon
+              icon={faPencilAlt}
               name="editDesc"
-              onClick={this.switchFlag}
+              onClick={() => {
+                this.switchFlag("editDesc");
+              }}
             />
           </div>
         )}
         {editDesc && (
-          <div>
+          <div className="item__description">
             {locale.desc}{" "}
             <input
               name="description"
               value={description}
               onChange={this.handleInputChange}
             />{" "}
-            <Button
-              label={locale.edit}
+            <FontAwesomeIcon
+              icon={faPencilAlt}
               name="editDesc"
-              onClick={this.switchFlag}
+              onClick={() => {
+                this.switchFlag("editDesc");
+              }}
             />
           </div>
         )}
-        <div>
+        <div className="item__status">
           {`${locale.status} ${
             owned ? locale.statusPositive : locale.statusNegative
           }`}
@@ -141,7 +149,7 @@ class Item extends React.Component {
             onChange={this.handleInputChange}
           />
         </div>
-        <Button label={locale.remove} onClick={this.removeItem} />
+        <Button label={locale.remove} onClick={this.removeItem} alert={true} />
       </div>
     );
   }

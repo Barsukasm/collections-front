@@ -1,6 +1,7 @@
 export default {
   ItemList: {
-    back: "Обратно к коллекциям"
+    back: "Обратно к коллекциям",
+    emptyItems: 'К сожалению список пуст'
   },
   Item: {
     missingDescription:
@@ -28,6 +29,8 @@ export default {
     add: "Добавить",
     forTitle: "Название предмета: ",
     forDesc: "Описание предмета: ",
-    forOwned: "Уже в коллекции? "
+    forOwned: "Уже в коллекции? ",
+    descriptionPlaceholder: 'Введите описание предмета...',
+    titlePlaceholder: 'Введите название предмета...'
   }
 };

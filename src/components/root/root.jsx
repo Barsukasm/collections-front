@@ -5,6 +5,8 @@ import ItemList from "../items-list";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import "./root.css";
+
 class Root extends React.Component {
   render() {
     return (

@@ -5,6 +5,9 @@ import collectionsApi from "../../api/collections-api";
 import ItemForm from "../item-form";
 import Button from "../button/button";
 import Locale from "../../locale";
+import classNames from 'classnames';
+
+import "./item-list.scss";
 
 const locale = Locale.ItemList;
 
@@ -100,11 +103,12 @@ class ItemList extends React.Component {
   };
 
   render() {
-    const { items } = this.state;
+    const { items, loading } = this.state;
     return (
-      <div className="item-list">
+      <div className={classNames("item-list", {' item-list__loading': loading})}>
         <ItemForm addItem={this.addItem} />
-        {items.map(({ name, description, owned, id }) => (
+        {items.length===0 && <div>{locale.emptyItems}</div>}
+        {items.length>0 && items.map(({ name, description, owned, id }) => (
           <Item
             key={id}
             itemId={id}
