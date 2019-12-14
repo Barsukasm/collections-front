@@ -1,12 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
-import Locale from "../../locale";
+import Locale from '../../locale';
 
-import "./collection.scss";
+import './collection.scss';
 
-import Button from "../button/button";
+import Button from '../button/button';
 
 const locale = Locale.Collection;
 
@@ -25,8 +27,8 @@ class Collection extends React.Component {
   state = {
     changeTitle: false,
     changeDescr: false,
-    collectionName: "",
-    description: ""
+    collectionName: '',
+    description: ''
   };
 
   componentDidMount() {
@@ -38,7 +40,7 @@ class Collection extends React.Component {
     });
   }
 
-  removeCollection = e => {
+  removeCollection = (e) => {
     e.preventDefault();
 
     const { removeCollection, collectionId } = this.props;
@@ -46,23 +48,21 @@ class Collection extends React.Component {
     removeCollection(collectionId);
   };
 
-  switchFlag = e => {
-    e.preventDefault();
-    const name = e.target.name;
+  switchFlag = (name) => {
     const { collectionId, editCollection } = this.props;
     const { collectionName, description } = this.state;
 
     if (this.state[name]) {
       editCollection(collectionId, collectionName, description);
     }
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       [name]: !prevState[name]
     }));
   };
 
-  handleInputChange = event => {
+  handleInputChange = (event) => {
     const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
@@ -70,7 +70,7 @@ class Collection extends React.Component {
     });
   };
 
-  openCollection = e => {
+  openCollection = (e) => {
     e.preventDefault();
 
     const { collectionId } = this.props;
@@ -85,64 +85,71 @@ class Collection extends React.Component {
       collectionName,
       description
     } = this.state;
-    console.log(this.props.history);
     return (
-      <div className="collection">
+      <div className='collection'>
         {!changeTitle && (
-          <div>
+          <div className='collection__title'>
             {`${locale.name} ${collectionName}`}
-            <Button
-              label={locale.edit}
-              name="changeTitle"
-              onClick={this.switchFlag}
+            <FontAwesomeIcon
+              icon={faPencilAlt}
+              onClick={() => {
+                this.switchFlag('changeTitle');
+              }}
             />
           </div>
         )}
         {changeTitle && (
-          <div>
+          <div className='collection__title'>
             {`${locale.name}`}
             <input
-              type="text"
-              name="collectionName"
+              type='text'
+              name='collectionName'
               value={collectionName}
               onChange={this.handleInputChange}
             />
-            <Button
-              label={locale.edit}
-              name="changeTitle"
-              onClick={this.switchFlag}
+            <FontAwesomeIcon
+              icon={faPencilAlt}
+              onClick={() => {
+                this.switchFlag('changeTitle');
+              }}
             />
           </div>
         )}
         {!changeDescr && (
-          <div>
+          <div className='collection__description'>
             {`${locale.desc} ${description}`}
-            <Button
-              label={locale.edit}
-              name="changeDescr"
-              onClick={this.switchFlag}
+            <FontAwesomeIcon
+              icon={faPencilAlt}
+              onClick={() => {
+                this.switchFlag('changeDescr');
+              }}
             />
           </div>
         )}
         {changeDescr && (
-          <div>
+          <div className='collection__description'>
             {`${locale.desc}`}
-            <input
-              type="text"
-              name="description"
+            <textarea
+              className='collection__desription-area'
+              name='description'
               value={description}
               onChange={this.handleInputChange}
             />
             <Button
               label={locale.edit}
-              name="changeDescr"
-              onClick={this.switchFlag}
+              onClick={() => {
+                this.switchFlag('changeDescr');
+              }}
             />
           </div>
         )}
 
         <Button label={locale.toItems} onClick={this.openCollection} />
-        <Button label={locale.remove} onClick={this.removeCollection} />
+        <Button
+          label={locale.remove}
+          onClick={this.removeCollection}
+          alert={true}
+        />
       </div>
     );
   }

@@ -1,12 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
-import Locale from "../../locale";
+import Locale from '../../locale';
 
-import "./item.scss";
-import Button from "../button/button";
+import './item.scss';
+import Button from '../button/button';
 
 const locale = Locale.Item;
 
@@ -26,8 +26,8 @@ class Item extends React.Component {
   };
 
   state = {
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     owned: false,
     editName: false,
     editDesc: false
@@ -43,7 +43,7 @@ class Item extends React.Component {
     });
   }
 
-  removeItem = e => {
+  removeItem = (e) => {
     e.preventDefault();
 
     const { removeItem, itemId } = this.props;
@@ -51,24 +51,24 @@ class Item extends React.Component {
     removeItem(itemId);
   };
 
-  switchFlag = targetName => {
+  switchFlag = (targetName) => {
     const { itemId, editItem } = this.props;
     const { name, description, owned } = this.state;
 
     if (this.state[targetName]) {
       editItem(itemId, name, description, owned);
     }
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       [targetName]: !prevState[targetName]
     }));
   };
 
-  handleInputChange = event => {
+  handleInputChange = (event) => {
     const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-    if (name === "owned") {
+    if (name === 'owned') {
       const { editItem, itemId } = this.props;
       const { name, description } = this.state;
 
@@ -83,68 +83,65 @@ class Item extends React.Component {
   render() {
     const { name, description, owned, editName, editDesc } = this.state;
     return (
-      <div className="item">
+      <div className='item'>
         {!editName && (
-          <div className="item__title">
-            {`${locale.name} ${name}`}{" "}
+          <div className='item__title'>
+            {`${locale.name} ${name}`}
             <FontAwesomeIcon
               icon={faPencilAlt}
-              name="editName"
               onClick={() => {
-                this.switchFlag("editName");
+                this.switchFlag('editName');
               }}
             />
           </div>
         )}
         {editName && (
-          <div className="item__title">
-            {locale.name}{" "}
-            <input name="name" value={name} onChange={this.handleInputChange} />{" "}
+          <div className='item__title'>
+            {locale.name}
+            <input name='name' value={name} onChange={this.handleInputChange} />
             <FontAwesomeIcon
               icon={faPencilAlt}
-              name="editName"
               onClick={() => {
-                this.switchFlag("editName");
+                this.switchFlag('editName');
               }}
             />
           </div>
         )}
         {!editDesc && (
-          <div className="item__description">
-            {`${locale.desc} ${description}`}{" "}
+          <div className='item__description'>
+            {`${locale.desc} ${description}`}
             <FontAwesomeIcon
               icon={faPencilAlt}
-              name="editDesc"
               onClick={() => {
-                this.switchFlag("editDesc");
+                this.switchFlag('editDesc');
               }}
             />
           </div>
         )}
         {editDesc && (
-          <div className="item__description">
-            {locale.desc}{" "}
-            <input
-              name="description"
+          <div className='item__description'>
+            {locale.desc}
+            <textarea
+              className='item__desription-area'
+              name='description'
               value={description}
               onChange={this.handleInputChange}
-            />{" "}
-            <FontAwesomeIcon
-              icon={faPencilAlt}
-              name="editDesc"
+            />
+            <Button
+              label={locale.edit}
               onClick={() => {
-                this.switchFlag("editDesc");
+                this.switchFlag('editDesc');
               }}
             />
           </div>
         )}
-        <div className="item__status">
+        <div className='item__status'>
           {`${locale.status} ${
             owned ? locale.statusPositive : locale.statusNegative
           }`}
           <input
-            type="checkbox"
-            name="owned"
+            type='checkbox'
+            name='owned'
             checked={owned}
             onChange={this.handleInputChange}
           />

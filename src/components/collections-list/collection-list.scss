@@ -1,6 +1,6 @@
 @import '../preloader/preloader';
 
-.item-list {
+.collection-list {
   margin: 1rem auto;
   width: 90%;
   display: flex;
@@ -14,7 +14,7 @@
 }
 
 @media screen and (min-width: 798px) {
-  .item-list {
+  .collection-list {
     width: 50%;
   }
 }

@@ -12,7 +12,7 @@ export default {
     statusPositive: "В коллекции",
     statusNegative: "Еще не получен",
     remove: "Удалить предмет",
-    edit: "Редактировать"
+    edit: "Подтвердить"
   },
   Collection: {
     missingDescription: "К сожалению, описание для этой коллекции отсутствует.",
@@ -20,10 +20,15 @@ export default {
     desc: "Описание:",
     toItems: "Подробнее",
     remove: "Удалить коллекцию",
-    edit: "Редактировать"
+    edit: "Подтвердить"
   },
   CollectionForm: {
-    add: "Добавить"
+    add: "Добавить",
+    forTitle: "Название коллекции: ",
+    forDesc: "Описание коллекции: ",
+    descriptionPlaceholder: 'Введите описание коллекции...',
+    titlePlaceholder: 'Введите название название...',
+    selectImage: 'Выберите изображение'
   },
   ItemForm: {
     add: "Добавить",
