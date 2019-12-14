@@ -31,7 +31,9 @@ class CollectionsList extends React.Component {
 
     formData.append("name", title);
     formData.append("description", description);
-    formData.append("collection-cover", file);
+    if (file !== "") {
+      formData.append("collection-cover", file);
+    }
 
     collectionsApi
       .post("/collections", formData, {
