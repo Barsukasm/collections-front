@@ -28,7 +28,8 @@ export default {
     forDesc: "Описание коллекции: ",
     descriptionPlaceholder: 'Введите описание коллекции...',
     titlePlaceholder: 'Введите название название...',
-    selectImage: 'Выберите изображение'
+    selectImage: 'Выберите изображение',
+    notImage: 'Данный файл не является изображением'
   },
   ItemForm: {
     add: "Добавить",

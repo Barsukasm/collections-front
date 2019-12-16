@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-import Locale from "../../locale";
-import Button from "../button/button";
+import Locale from '../../locale';
+import Button from '../button/button';
 
-import "./collection-form.scss";
+import './collection-form.scss';
 
 const locale = Locale.CollectionForm;
 
@@ -15,16 +15,16 @@ class CollectionForm extends React.Component {
   };
 
   state = {
-    title: "",
-    description: "",
-    image: "",
-    imagePreview: "",
+    title: '',
+    description: '',
+    image: '',
+    imagePreview: '',
     uploaded: false
   };
 
-  handleInputChange = event => {
+  handleInputChange = (event) => {
     const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
@@ -32,7 +32,7 @@ class CollectionForm extends React.Component {
     });
   };
 
-  addCollection = e => {
+  addCollection = (e) => {
     e.preventDefault();
 
     const { addCollection } = this.props;
@@ -41,15 +41,25 @@ class CollectionForm extends React.Component {
     addCollection(title, description, image);
   };
 
-  handleSelectImage = e => {
-    const reader = new FileReader();
-    let img;
-    reader.onload = ev => {
-      img = ev.target.result;
-      this.setState({ imagePreview: img, uploaded: true });
-    };
-    reader.readAsDataURL(e.target.files[0]);
-    this.setState({ image: e.target.files[0] });
+  handleSelectImage = (e) => {
+    if (
+      e.target.files[0] !== undefined &&
+      e.target.files[0].type.startsWith('image/')
+    ) {
+      const reader = new FileReader();
+      let img;
+      reader.onload = (ev) => {
+        img = ev.target.result;
+        this.setState({ imagePreview: img, uploaded: true });
+      };
+      reader.readAsDataURL(e.target.files[0]);
+      this.setState({ image: e.target.files[0] });
+    } else {
+      this.setState({ imagePreview: '', uploaded: false, image: '' });
+      if (e.target.files[0] !== undefined) {
+        alert(locale.notImage);
+      }
+    }
   };
 
   render() {
@@ -57,42 +67,43 @@ class CollectionForm extends React.Component {
 
     return (
       <form
-        className="collection-form"
+        className='collection-form'
         onSubmit={this.addCollection}
-        encType="multipart/form-data"
+        encType='multipart/form-data'
       >
-        <div className="collection-form__group">
-          <label htmlFor="title">{locale.forTitle}</label>
+        <div className='collection-form__group'>
+          <label htmlFor='title'>{locale.forTitle}</label>
           <input
-            type="text"
-            name="title"
+            type='text'
+            name='title'
             value={title}
             onChange={this.handleInputChange}
             placeholder={locale.titlePlaceholder}
           />
         </div>
-        <div className="collection-form__group">
-          <label htmlFor="description">{locale.forDesc}</label>
+        <div className='collection-form__group'>
+          <label htmlFor='description'>{locale.forDesc}</label>
           <textarea
-            className="collection-form__description"
-            name="description"
+            className='collection-form__description'
+            name='description'
             value={description}
             onChange={this.handleInputChange}
             placeholder={locale.descriptionPlaceholder}
           />
         </div>
-        <div className="collection-form__group">
+        <div className='collection-form__group'>
           <img
-            className={classNames("collection-form__image", {
-              " collection-form__image-loaded": uploaded
+            className={classNames('collection-form__image', {
+              ' collection-form__image-loaded': uploaded
             })}
-            alt=""
+            alt=''
             src={imagePreview}
           />
           <input
-            type="file"
+            type='file'
             onChange={this.handleSelectImage}
-            name="collection-cover"
+            name='collection-cover'
+            accept='image/*'
           />
         </div>
         <Button label={locale.add} />

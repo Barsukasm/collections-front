@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import Collection from "../collection";
-import collectionsApi from "../../api/collections-api";
-import CollectionForm from "../collection-form/collection-form";
-import classNames from "classnames";
+import Collection from '../collection';
+import collectionsApi from '../../api/collections-api';
+import CollectionForm from '../collection-form/collection-form';
+import classNames from 'classnames';
 
-import "./collection-list.scss";
+import './collection-list.scss';
 
 class CollectionsList extends React.Component {
   state = { collections: [], loading: false, message: null };
@@ -13,81 +13,87 @@ class CollectionsList extends React.Component {
   componentDidMount() {
     this.setState({ loading: true });
     collectionsApi
-      .get("/collections")
-      .then(response => {
-        if (response.data.status === "OK") {
+      .get('/collections')
+      .then((response) => {
+        if (response.data.status === 'OK') {
           const collections = response.data.data;
           this.setState({ collections, loading: false });
         } else {
           this.setState({ message: response.data.message });
         }
       })
-      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
+      .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
   }
 
   addCollection = (title, description, file) => {
     this.setState({ loading: true });
     const formData = new FormData();
 
-    formData.append("name", title);
-    formData.append("description", description);
-    if (file !== "") {
-      formData.append("collection-cover", file);
+    formData.append('name', title);
+    formData.append('description', description);
+    if (file !== '') {
+      formData.append('collection-cover', file);
     }
 
     collectionsApi
-      .post("/collections", formData, {
-        headers: { "Content-type": "multipart/form-data" }
+      .post('/collections', formData, {
+        headers: { 'Content-type': 'multipart/form-data' }
       })
-      .then(response => {
-        if (response.data.status === "OK") {
-          this.setState(prevState => ({
+      .then((response) => {
+        if (response.data.status === 'OK') {
+          this.setState((prevState) => ({
             collections: [...prevState.collections, response.data.data],
             loading: false
           }));
         } else {
-          console.log(response.data.message);
           this.setState({ message: response.data.message });
         }
       })
-      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
+      .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
   };
 
-  removeCollection = collectionId => {
+  removeCollection = (collectionId) => {
     this.setState({ loading: true });
     collectionsApi
       .delete(`/collections/${collectionId}`)
-      .then(response => {
-        if (response.data.status === "OK") {
-          this.setState(prevState => ({
+      .then((response) => {
+        if (response.data.status === 'OK') {
+          this.setState((prevState) => ({
             collections: [
               ...prevState.collections.filter(
-                collection => collection.id !== collectionId
+                (collection) => collection.id !== collectionId
               )
             ],
             loading: false
           }));
         } else {
-          console.log(response.data.message);
           this.setState({ message: response.data.message });
         }
       })
-      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
+      .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
   };
 
-  editCollection = (collectionId, newTitle, newDescription) => {
+  editCollection = (collectionId, newTitle, newDescription, file) => {
     this.setState({ loading: true });
+    const formData = new FormData();
+
+    formData.append('name', newTitle);
+    formData.append('description', newDescription);
+    if (file !== '') {
+      formData.append('collection-cover', file);
+    }
+
     collectionsApi
-      .patch(`/collections/${collectionId}`, {
-        title: newTitle,
-        description: newDescription
+      .patch(`/collections/${collectionId}`, formData, {
+        headers: { 'Content-type': 'multipart/form-data' }
       })
-      .then(response => {
+      .then((response) => {
         const newCollection = response.data.data;
-        if (response.data.status === "OK") {
-          this.setState(prevState => ({
+        console.log(response.data);
+        if (response.data.status === 'OK') {
+          this.setState((prevState) => ({
             collections: [
-              ...prevState.collections.map(collection => {
+              ...prevState.collections.map((collection) => {
                 if (collection.id === collectionId) {
                   return newCollection;
                 }
@@ -98,15 +104,15 @@ class CollectionsList extends React.Component {
           }));
         }
       })
-      .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
+      .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
   };
 
   render() {
     const { collections, loading } = this.state;
     return (
       <div
-        className={classNames("collection-list", {
-          " collection-list__loading": loading
+        className={classNames('collection-list', {
+          ' collection-list__loading': loading
         })}
       >
         <CollectionForm addCollection={this.addCollection} />
