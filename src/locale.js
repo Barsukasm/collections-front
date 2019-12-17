@@ -20,7 +20,8 @@ export default {
     desc: "Описание:",
     toItems: "Подробнее",
     remove: "Удалить коллекцию",
-    edit: "Подтвердить"
+    edit: "Подтвердить",
+    removeImage: 'Удалить обложку'
   },
   CollectionForm: {
     add: "Добавить",

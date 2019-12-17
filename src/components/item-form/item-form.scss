@@ -47,4 +47,23 @@
     width: 100%;
     margin: 0.5rem auto;
   }
+
+  &__image {
+    background-image: url('../../assets/placeholder.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 300px;
+    width: 300px;
+    display: block;
+  }
+
+  &__image-loaded{
+    background-image: none;
+    background-color: #fff;
+    min-height: 300px;
+    min-width: 300px;
+    max-height: 400px;
+    max-width: 600px;
+  }
 }

@@ -59,9 +59,10 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 300px;
-    width: 300px;
+    min-height: 300px;
+    max-height: 400px;
     display: block;
+    margin: 0.5rem 0.5rem 0.5rem 0;
   }
 
   &__image-loaded{
@@ -73,10 +74,12 @@
     float: right;
     display: flex;
     flex-direction: column;
+    width: 60%;
   }
   
   &__left{
     float: left;
+    width: 40%;
   }
   
   &:after{
@@ -86,6 +89,13 @@
   }
 
   &__footer{
-    padding-top: 300px;
+    padding-top: 400px;
+  }
+
+  &__edit-image{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
 }

@@ -54,4 +54,49 @@
     font-size: 14px;
     margin: 0.2rem auto;
   }
+
+  &__image {
+    background-image: url('../../assets/placeholder.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 300px;
+    min-width: 300px;
+    max-height: 400px;
+    max-width: 600px;
+    display: block;
+    margin: 0.5rem 0.5rem 0.5rem 0;
+  }
+
+  &__image-loaded{
+    background-image: none;
+    background-color: #fff;
+  }
+
+  &__right{
+    float: right;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__left{
+    float: left;
+  }
+
+  &:after{
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  &__footer{
+    padding-top: 400px;
+  }
+
+  &__edit-image{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 }

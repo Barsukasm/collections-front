@@ -73,12 +73,13 @@ class CollectionsList extends React.Component {
       .catch(() => this.setState({ message: 'NETWORK_ERROR', loading: false }));
   };
 
-  editCollection = (collectionId, newTitle, newDescription, file) => {
+  editCollection = (collectionId, newTitle, newDescription, file='', removeImage=false) => {
     this.setState({ loading: true });
     const formData = new FormData();
 
     formData.append('name', newTitle);
     formData.append('description', newDescription);
+    formData.append('removeImage', removeImage);
     if (file !== '') {
       formData.append('collection-cover', file);
     }

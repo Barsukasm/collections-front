@@ -5,7 +5,7 @@ import collectionsApi from "../../api/collections-api";
 import ItemForm from "../item-form";
 import Button from "../button/button";
 import Locale from "../../locale";
-import classNames from 'classnames';
+import classNames from "classnames";
 
 import "./item-list.scss";
 
@@ -30,14 +30,26 @@ class ItemList extends React.Component {
       .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
   }
 
-  addItem = (title, description, owned) => {
+  addItem = (title, description, owned, file = "") => {
     this.setState({ loading: true });
+
+    const formData = new FormData();
+
+    formData.append("name", title);
+    formData.append("description", description);
+    formData.append("owned", owned);
+    if (file !== "") {
+      formData.append("item-cover", file);
+    }
+
     collectionsApi
-      .post(`/collections/${this.props.match.params.collectionId}/items`, {
-        name: title,
-        description,
-        owned
-      })
+      .post(
+        `/collections/${this.props.match.params.collectionId}/items`,
+        formData,
+        {
+          headers: { "Content-type": "multipart/form-data" }
+        }
+      )
       .then(response => {
         if (response.data.status === "OK") {
           this.setState(prevState => ({
@@ -49,15 +61,32 @@ class ItemList extends React.Component {
       .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
   };
 
-  editItem = (id, title, description, owned) => {
+  editItem = (
+    id,
+    title,
+    description,
+    owned,
+    file = "",
+    removeImage = false
+  ) => {
     this.setState({ loading: true });
+
+    const formData = new FormData();
+
+    formData.append("name", title);
+    formData.append("description", description);
+    formData.append("owned", owned);
+    formData.append("removeImage", removeImage);
+    if (file !== "") {
+      formData.append("item-cover", file);
+    }
+
     collectionsApi
       .patch(
         `/collections/${this.props.match.params.collectionId}/items/${id}`,
+        formData,
         {
-          name: title,
-          description,
-          owned
+          headers: { "Content-type": "multipart/form-data" }
         }
       )
       .then(response => {
@@ -74,6 +103,9 @@ class ItemList extends React.Component {
             ],
             loading: false
           }));
+        }else {
+          console.log(response.data.message);
+          this.setState({ message: response.data.message });
         }
       })
       .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
@@ -91,6 +123,9 @@ class ItemList extends React.Component {
             items: [...prevState.items.filter(item => item.id !== id)],
             loading: false
           }));
+        }else {
+          console.log(response.data.message);
+          this.setState({ message: response.data.message });
         }
       })
       .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
@@ -105,20 +140,24 @@ class ItemList extends React.Component {
   render() {
     const { items, loading } = this.state;
     return (
-      <div className={classNames("item-list", {' item-list__loading': loading})}>
+      <div
+        className={classNames("item-list", { " item-list__loading": loading })}
+      >
         <ItemForm addItem={this.addItem} />
-        {items.length===0 && <div>{locale.emptyItems}</div>}
-        {items.length>0 && items.map(({ name, description, owned, id }) => (
-          <Item
-            key={id}
-            itemId={id}
-            name={name}
-            description={description}
-            owned={owned}
-            editItem={this.editItem}
-            removeItem={this.removeItem}
-          />
-        ))}
+        {items.length === 0 && <div>{locale.emptyItems}</div>}
+        {items.length > 0 &&
+          items.map(({ name, description, owned, id, path }) => (
+            <Item
+              itemId={id}
+              name={name}
+              description={description}
+              owned={owned}
+              editItem={this.editItem}
+              removeItem={this.removeItem}
+              path={path}
+              key={id}
+            />
+          ))}
         <Button label={locale.back} onClick={this.backToCollections} />
       </div>
     );
