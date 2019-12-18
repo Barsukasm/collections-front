@@ -59,8 +59,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    min-height: 300px;
-    max-height: 400px;
+    height: 300px;
     display: block;
     margin: 0.5rem 0.5rem 0.5rem 0;
   }
@@ -68,6 +67,8 @@
   &__image-loaded{
     background-image: none;
     background-color: #fff;
+    min-height: 300px;
+    max-height: 400px;
   }
   
   &__right{

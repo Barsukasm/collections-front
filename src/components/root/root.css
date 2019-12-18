@@ -8,21 +8,21 @@
     url('../../fonts/didact-gothic-v13-latin_cyrillic-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html, body{
+html, body {
     font-family: 'Didact Gothic', sans-serif;
     height: 100%;
     font-size: 16px;
 }
 
-svg{
+svg {
     margin-left: 0.2rem;
     cursor: pointer;
-  }
+}
   
   

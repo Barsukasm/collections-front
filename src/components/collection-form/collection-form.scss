@@ -54,6 +54,11 @@
     background-repeat: no-repeat;
     background-size: cover;
     height: 300px;
+    width: 300px;
+    min-height: 300px;
+    min-width: 300px;
+    max-height: 400px;
+    max-width: 600px;
     display: block;
   }
 

@@ -12,7 +12,8 @@ export default {
     statusPositive: "В коллекции",
     statusNegative: "Еще не получен",
     remove: "Удалить предмет",
-    edit: "Подтвердить"
+    edit: "Подтвердить",
+    removeImage: 'Удалить'
   },
   Collection: {
     missingDescription: "К сожалению, описание для этой коллекции отсутствует.",
@@ -21,7 +22,7 @@ export default {
     toItems: "Подробнее",
     remove: "Удалить коллекцию",
     edit: "Подтвердить",
-    removeImage: 'Удалить обложку'
+    removeImage: 'Удалить'
   },
   CollectionForm: {
     add: "Добавить",
@@ -39,5 +40,8 @@ export default {
     forOwned: "Уже в коллекции? ",
     descriptionPlaceholder: 'Введите описание предмета...',
     titlePlaceholder: 'Введите название предмета...'
+  },
+  ImagePicker:{
+    notImage: 'Данный файл не является изображением'
   }
 };
