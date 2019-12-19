@@ -1,18 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import React from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
-import Locale from '../../locale';
+import Locale from "../../locale";
 
-import './collection.scss';
+import "./collection.scss";
 
-import Button from '../button/button';
-import classNames from 'classnames';
-import ImagePicker from '../image-picker';
+import Button from "../button/button";
+import classNames from "classnames";
+import ImagePicker from "../image-picker";
 
-const HOSTNAME = 'http://localhost:8080/';
+const HOSTNAME = "http://localhost:8080/";
 
 const locale = Locale.Collection;
 
@@ -28,25 +28,25 @@ class Collection extends React.Component {
 
   static defaultProps = {
     description: locale.missingDescription,
-    path: ''
+    path: ""
   };
 
   state = {
     changeTitle: false,
     changeDescr: false,
-    collectionName: '',
-    description: '',
-    imagePreview: '',
+    collectionName: "",
+    description: "",
+    imagePreview: "",
     uploaded: false,
-    image: '',
-    fileName: ''
+    image: "",
+    fileName: ""
   };
 
   componentDidMount() {
     const { collectionName, description, path } = this.props;
     if (path) {
       this.setState({
-        imagePreview: `${HOSTNAME}${path.split('\\')[1]}`,
+        imagePreview: `${HOSTNAME}${path.split("\\")[1]}`,
         uploaded: true
       });
     }
@@ -57,7 +57,7 @@ class Collection extends React.Component {
     });
   }
 
-  removeCollection = (e) => {
+  removeCollection = e => {
     e.preventDefault();
 
     const { removeCollection, collectionId } = this.props;
@@ -65,7 +65,7 @@ class Collection extends React.Component {
     removeCollection(collectionId);
   };
 
-  switchFlag = (name) => {
+  switchFlag = name => {
     const { collectionId, editCollection } = this.props;
     const { collectionName, description } = this.state;
 
@@ -73,14 +73,14 @@ class Collection extends React.Component {
       editCollection(collectionId, collectionName, description);
     }
 
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       [name]: !prevState[name]
     }));
   };
 
-  handleInputChange = (event) => {
+  handleInputChange = event => {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
@@ -88,7 +88,7 @@ class Collection extends React.Component {
     });
   };
 
-  openCollection = (e) => {
+  openCollection = e => {
     e.preventDefault();
 
     const { collectionId } = this.props;
@@ -96,11 +96,31 @@ class Collection extends React.Component {
     this.props.history.push(`/${collectionId}`);
   };
 
-  handleSelectImage = (image) => {
-    const { collectionId, editCollection } = this.props;
-    const { collectionName, description } = this.state;
+  handleSelectImage = e => {
+    if (
+      e.target.files[0] !== undefined &&
+      e.target.files[0].type.startsWith("image/")
+    ) {
+      const reader = new FileReader();
+      let img;
+      reader.onload = ev => {
+        img = ev.target.result;
+        this.setState({ imagePreview: img, uploaded: true });
+      };
+      reader.readAsDataURL(e.target.files[0]);
+      this.setState({
+        image: e.target.files[0],
+        fileName: e.target.files[0].name
+      });
 
-    editCollection(collectionId, collectionName, description, image);
+      const { collectionId, editCollection } = this.props;
+      const { name, description } = this.state;
+      editCollection(collectionId, name, description, e.target.files[0]);
+    } else {
+      if (e.target.files[0] !== undefined) {
+        alert(locale.notImage);
+      }
+    }
   };
 
   removeImage = () => {
@@ -108,13 +128,13 @@ class Collection extends React.Component {
     const { collectionName, description } = this.state;
 
     this.setState({
-      image: '',
-      fileName: '',
-      imagePreview: '',
+      image: "",
+      fileName: "",
+      imagePreview: "",
       uploaded: false
     });
 
-    editCollection(collectionId, collectionName, description, '', true);
+    editCollection(collectionId, collectionName, description, "", true);
   };
 
   render() {
@@ -123,84 +143,101 @@ class Collection extends React.Component {
       changeDescr,
       collectionName,
       description,
-      imagePreview
+      imagePreview,
+      uploaded,
+      fileName
     } = this.state;
     console.log(imagePreview);
     return (
-      <div className='collection'>
-        <div className='collection__left'>
+      <div className="collection">
+        <div className="collection__left">
           {!changeTitle && (
-            <div className='collection__title'>
+            <div className="collection__title">
               {`${locale.name} ${collectionName}`}
               <FontAwesomeIcon
                 icon={faPencilAlt}
                 onClick={() => {
-                  this.switchFlag('changeTitle');
+                  this.switchFlag("changeTitle");
                 }}
               />
             </div>
           )}
           {changeTitle && (
-            <div className='collection__title'>
+            <div className="collection__title">
               {`${locale.name}`}
               <input
-                type='text'
-                name='collectionName'
+                type="text"
+                name="collectionName"
                 value={collectionName}
                 onChange={this.handleInputChange}
               />
               <FontAwesomeIcon
                 icon={faPencilAlt}
                 onClick={() => {
-                  this.switchFlag('changeTitle');
+                  this.switchFlag("changeTitle");
                 }}
               />
             </div>
           )}
           {!changeDescr && (
-            <div className='collection__description'>
+            <div className="collection__description">
               {`${locale.desc} ${description}`}
               <FontAwesomeIcon
                 icon={faPencilAlt}
                 onClick={() => {
-                  this.switchFlag('changeDescr');
+                  this.switchFlag("changeDescr");
                 }}
               />
             </div>
           )}
           {changeDescr && (
-            <div className='collection__description'>
+            <div className="collection__description">
               {`${locale.desc}`}
               <textarea
-                className='collection__desription-area'
-                name='description'
+                className="collection__desription-area"
+                name="description"
                 value={description}
                 onChange={this.handleInputChange}
               />
               <Button
                 label={locale.edit}
                 onClick={() => {
-                  this.switchFlag('changeDescr');
+                  this.switchFlag("changeDescr");
                 }}
               />
             </div>
           )}
         </div>
 
-        <div className='collection__right'>
-          <ImagePicker
-            handleImage={this.handleSelectImage}
-            imagePreview={imagePreview}
-          >
+        <div className="collection__right">
+          <img
+            className={classNames("collection__image", {
+              " collection__image-loaded": uploaded
+            })}
+            alt=""
+            src={imagePreview}
+          />
+          <div className="collection__edit-image">
+            <div className="custom-image-form">
+              <div className="custom-image-form__label">{fileName}</div>
+              <div className="custom-image-form__sb">Выберите файл</div>
+              <input
+                type="file"
+                onChange={this.handleSelectImage}
+                name="collection-cover"
+                accept="image/*"
+                className="custom-image-form__fp"
+              />
+            </div>
             <Button
               label={locale.removeImage}
               onClick={this.removeImage}
               alert={true}
             />
-          </ImagePicker>
+          </div>
         </div>
 
-        <div className='collection__footer'>
+        <div className="collection__footer">
           <Button label={locale.toItems} onClick={this.openCollection} />
           <Button
             label={locale.remove}
