@@ -1,7 +1,7 @@
 export default {
   ItemList: {
     back: "Обратно к коллекциям",
-    emptyItems: 'К сожалению список пуст'
+    emptyItems: "К сожалению список пуст"
   },
   Item: {
     missingDescription:
@@ -13,7 +13,7 @@ export default {
     statusNegative: "Еще не получен",
     remove: "Удалить предмет",
     edit: "Подтвердить",
-    removeImage: 'Удалить'
+    removeImage: "Удалить"
   },
   Collection: {
     missingDescription: "К сожалению, описание для этой коллекции отсутствует.",
@@ -22,26 +22,26 @@ export default {
     toItems: "Подробнее",
     remove: "Удалить коллекцию",
     edit: "Подтвердить",
-    removeImage: 'Удалить'
+    removeImage: "Удалить"
   },
   CollectionForm: {
     add: "Добавить",
     forTitle: "Название коллекции: ",
     forDesc: "Описание коллекции: ",
-    descriptionPlaceholder: 'Введите описание коллекции...',
-    titlePlaceholder: 'Введите название название...',
-    selectImage: 'Выберите изображение',
-    notImage: 'Данный файл не является изображением'
+    descriptionPlaceholder: "Описание...",
+    titlePlaceholder: "Название...",
+    selectImage: "Выберите изображение",
+    notImage: "Данный файл не является изображением"
   },
   ItemForm: {
     add: "Добавить",
     forTitle: "Название предмета: ",
     forDesc: "Описание предмета: ",
     forOwned: "Уже в коллекции? ",
-    descriptionPlaceholder: 'Введите описание предмета...',
-    titlePlaceholder: 'Введите название предмета...'
+    descriptionPlaceholder: "Введите описание предмета...",
+    titlePlaceholder: "Введите название предмета..."
   },
-  ImagePicker:{
-    notImage: 'Данный файл не является изображением'
+  ImagePicker: {
+    notImage: "Данный файл не является изображением"
   }
 };

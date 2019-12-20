@@ -1,14 +1,14 @@
-import React from 'react';
-import propTypes from 'prop-types';
+import React from "react";
+import propTypes from "prop-types";
 
-import './button.scss';
+import "./button.scss";
 
-const Button = (props) => {
-  const {label, alert, ...otherProps} = props;
+const Button = props => {
+  const { label, alert, ...otherProps } = props;
 
-  let cName = 'button';
+  let cName = "button";
 
-  if(alert) cName = cName.concat(' button_alert');
+  if (alert) cName = cName.concat(" button_alert");
 
   return (
     <button className={cName} {...otherProps}>
@@ -23,7 +23,7 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  label: 'SUBMIT',
+  label: "SUBMIT",
   alert: false
 };
 

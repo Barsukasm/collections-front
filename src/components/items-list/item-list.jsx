@@ -103,7 +103,7 @@ class ItemList extends React.Component {
             ],
             loading: false
           }));
-        }else {
+        } else {
           console.log(response.data.message);
           this.setState({ message: response.data.message });
         }
@@ -123,18 +123,12 @@ class ItemList extends React.Component {
             items: [...prevState.items.filter(item => item.id !== id)],
             loading: false
           }));
-        }else {
+        } else {
           console.log(response.data.message);
           this.setState({ message: response.data.message });
         }
       })
       .catch(() => this.setState({ message: "NETWORK_ERROR", loading: false }));
-  };
-
-  backToCollections = e => {
-    e.preventDefault();
-
-    this.props.history.push("/");
   };
 
   render() {
@@ -158,7 +152,12 @@ class ItemList extends React.Component {
               key={id}
             />
           ))}
-        <Button label={locale.back} onClick={this.backToCollections} />
+        <Button
+          label={locale.back}
+          onClick={() => {
+            this.props.history.push("/");
+          }}
+        />
       </div>
     );
   }

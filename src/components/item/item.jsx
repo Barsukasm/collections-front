@@ -56,14 +56,6 @@ class Item extends React.Component {
     });
   }
 
-  removeItem = e => {
-    e.preventDefault();
-
-    const { removeItem, itemId } = this.props;
-
-    removeItem(itemId);
-  };
-
   switchFlag = targetName => {
     const { itemId, editItem } = this.props;
     const { name, description, owned } = this.state;
@@ -121,14 +113,15 @@ class Item extends React.Component {
   };
 
   removeImage = () => {
+    const { itemId, editItem } = this.props;
+    const { name, description, owned } = this.state;
+
     this.setState({
       image: "",
       fileName: "",
       imagePreview: "",
       uploaded: false
     });
-    const { itemId, editItem } = this.props;
-    const { name, description, owned } = this.state;
     editItem(itemId, name, description, owned, "", true);
   };
 
@@ -143,6 +136,7 @@ class Item extends React.Component {
       uploaded,
       fileName
     } = this.state;
+    const { removeItem, itemId } = this.props;
     return (
       <div className="item">
         <div className="item__left">
@@ -212,6 +206,15 @@ class Item extends React.Component {
               onChange={this.handleInputChange}
             />
           </div>
+          <div className="item__footer">
+            <Button
+              label={locale.remove}
+              onClick={() => {
+                removeItem(itemId);
+              }}
+              alert={true}
+            />
+          </div>
         </div>
 
         <div className="item__right">
@@ -240,13 +243,6 @@ class Item extends React.Component {
               alert={true}
             />
           </div>
-        </div>
-        <div className="item__footer">
-          <Button
-            label={locale.remove}
-            onClick={this.removeItem}
-            alert={true}
-          />
         </div>
       </div>
     );

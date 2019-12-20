@@ -1,1 +1,1 @@
-export default from './collection-form';
+export default from "./collection-form";

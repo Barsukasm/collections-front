@@ -10,7 +10,6 @@ import "./collection.scss";
 
 import Button from "../button/button";
 import classNames from "classnames";
-import ImagePicker from "../image-picker";
 
 const HOSTNAME = "http://localhost:8080/";
 
@@ -57,14 +56,6 @@ class Collection extends React.Component {
     });
   }
 
-  removeCollection = e => {
-    e.preventDefault();
-
-    const { removeCollection, collectionId } = this.props;
-
-    removeCollection(collectionId);
-  };
-
   switchFlag = name => {
     const { collectionId, editCollection } = this.props;
     const { collectionName, description } = this.state;
@@ -88,14 +79,6 @@ class Collection extends React.Component {
     });
   };
 
-  openCollection = e => {
-    e.preventDefault();
-
-    const { collectionId } = this.props;
-
-    this.props.history.push(`/${collectionId}`);
-  };
-
   handleSelectImage = e => {
     if (
       e.target.files[0] !== undefined &&
@@ -114,8 +97,13 @@ class Collection extends React.Component {
       });
 
       const { collectionId, editCollection } = this.props;
-      const { name, description } = this.state;
-      editCollection(collectionId, name, description, e.target.files[0]);
+      const { collectionName, description } = this.state;
+      editCollection(
+        collectionId,
+        collectionName,
+        description,
+        e.target.files[0]
+      );
     } else {
       if (e.target.files[0] !== undefined) {
         alert(locale.notImage);
@@ -147,7 +135,7 @@ class Collection extends React.Component {
       uploaded,
       fileName
     } = this.state;
-    console.log(imagePreview);
+    const { removeCollection, collectionId } = this.props;
     return (
       <div className="collection">
         <div className="collection__left">
@@ -238,10 +226,17 @@ class Collection extends React.Component {
         </div>
 
         <div className="collection__footer">
-          <Button label={locale.toItems} onClick={this.openCollection} />
+          <Button
+            label={locale.toItems}
+            onClick={() => {
+              this.props.history.push(`/${collectionId}`);
+            }}
+          />
           <Button
             label={locale.remove}
-            onClick={this.removeCollection}
+            onClick={() => {
+              removeCollection(collectionId);
+            }}
             alert={true}
           />
         </div>
